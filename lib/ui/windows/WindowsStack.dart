@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fnvim/main.dart';
 import 'dart:math';
 
+import 'package:fnvim/ui/utils/GridUtils.dart';
+
 class WindowStack extends StatelessWidget {
   const WindowStack({Key? key}) : super(key: key);
 
@@ -15,13 +17,13 @@ class WindowStack extends StatelessWidget {
           children: state.windows.values
               .map(
                 (e) => Positioned(
-                  top: e.start_row.toDouble() * 7.5,
-                  left: e.start_col.toDouble() * 7.5,
+                  top: GridUtils.get_top_offset_from_rows(e.start_row),
+                  left: GridUtils.get_left_offset_from_cols(e.start_col),
                   child: Visibility(
                     visible: e.isVisible,
                     child: Container(
-                      width: e.width.toDouble() * 7.5,
-                      height: e.height.toDouble() * 7.5,
+                      width: GridUtils.get_width_from_cols(e.width),
+                      height: GridUtils.get_height_from_rows(e.height),
                       color: Colors
                           .primaries[Random().nextInt(Colors.primaries.length)],
                       child: SingleChildScrollView(

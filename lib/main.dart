@@ -5,6 +5,7 @@ import 'package:fnvim/core/EditorState.dart';
 import 'package:fnvim/core/events/EventHandler.dart';
 import 'package:fnvim/core/utils/ColorUtils.dart';
 import 'package:fnvim/providers/ThemeProvider.dart';
+import 'package:fnvim/ui/utils/GridUtils.dart';
 import 'core/extensions/HighlightsExtension.dart';
 
 import 'package:fnvim/ui/windows/WindowsStack.dart';
@@ -86,7 +87,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ..extMultigrid = true
       ..rgb = true;
 
-    await nvim.uiAttach(80, 80, opts.asMap());
+    var s = GridUtils.get_grid_dimensions(MediaQuery.of(context).size);
+
+    await nvim.uiAttach(s.width.toInt(), s.height.toInt(), opts.asMap());
   }
 
   @override
