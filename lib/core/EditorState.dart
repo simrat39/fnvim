@@ -11,6 +11,7 @@ typedef HighlightID = int;
 class EditorState extends ChangeNotifier {
   Map<HighlightID, Highlight> highlights = {};
   Map<GridID, Grid> grids = {};
+  GridID active_grid = -1;
   Map<WindowID, Window> windows = {};
   Map<dynamic, dynamic> options = {};
   DefaultColors? defaultColors;

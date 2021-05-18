@@ -83,7 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
     nvim = await Nvim.spawn(onNotify: handle, onRequest: handle);
     var opts = UiAttachOptions()
       ..extMessages = true
-      ..extTabline = true
       ..extMultigrid = true
       ..rgb = true;
 

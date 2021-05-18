@@ -54,12 +54,8 @@ class GridEventsHandler {
   void grid_cursor_goto(List<dynamic> data) {
     data.for_each_arg((arg) {
       var grid = state.grids[arg[0] as int];
-      state.grids.forEach((key, value) {
-        if (key != grid?.id) {
-          value.hide_cursor();
-        }
-      });
       grid?.update_cursor_pos(arg);
+      state.active_grid = grid?.id ?? -1;
     });
   }
 

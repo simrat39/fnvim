@@ -5,8 +5,8 @@ class GridUtils {
   static var col_width = 13;
 
   static Size get_grid_dimensions(Size screen) {
-    var rows = (screen.height / row_height).floor() + 1;
-    var cols = (screen.width / col_width).floor() + 1;
+    var rows = (screen.height / row_height).floor();
+    var cols = (screen.width / col_width).floor();
     return Size(cols.toDouble(), rows.toDouble());
   }
 
