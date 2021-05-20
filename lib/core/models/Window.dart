@@ -1,5 +1,5 @@
-import 'package:fnvim/core/EditorState.dart';
 import 'package:fnvim/core/models/Grid.dart';
+import 'package:fnvim/core/state/GridState.dart';
 
 class Window {
   int id;
@@ -26,7 +26,7 @@ class Window {
     isVisible = true;
   }
 
-  Grid? get_grid(EditorState e) {
+  Grid? get_grid(GridState e) {
     return e.grids[grid];
   }
 }

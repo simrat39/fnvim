@@ -1,6 +1,6 @@
-import 'dart:collection';
-
 import 'package:fnvim/core/models/CursorPosition.dart';
+
+typedef GridRow = int;
 
 class Grid {
   final int id;
@@ -8,8 +8,7 @@ class Grid {
   int width;
   int height;
 
-  SplayTreeMap<CellLocation, List<Cell>> lines =
-      SplayTreeMap((a, b) => a.row.compareTo(b.row));
+  Map<GridRow, List<Cell>> lines = {};
 
   bool is_cursor_visible = true;
   CursorPosition cursorPos = CursorPosition(0, 0);
@@ -31,14 +30,13 @@ class Grid {
     is_cursor_visible = false;
   }
 
-  List<String> getText() {
-    var ret = <String>[];
-    ret.addAll(lines.get_text());
-    return ret;
+  List<List<Cell>> getText() {
+    return [];
+    // return lines.get_text();
   }
 
   void add_grid_line(List<dynamic> args) {
-    var location = CellLocation(args[1], args[2]);
+    var location = args[1];
     lines[location] = [];
     for (var k = 0; k < args[3].length; k++) {
       int? hl_id;
@@ -51,9 +49,7 @@ class Grid {
         repeat = raw_cell[2];
       }
       var cell = Cell(raw_cell[0], hl_id, repeat);
-      for (var i = 0; i < repeat; i++) {
-        lines[location]?.add(cell);
-      }
+      lines[location]?.add(cell);
     }
   }
 
@@ -82,17 +78,23 @@ class Cell {
   String toString() {
     return text;
   }
+
+  @override
+  int get hashCode => text.hashCode;
+
+  @override
+  bool operator ==(o) => o is Cell && text == o.text;
 }
 
-extension Collect on Map<CellLocation, List<Cell>> {
-  List<String> get_text() {
-    var ret = <String>[];
+extension Collect on Map<GridRow, List<Cell>> {
+  List<List<Cell>> get_text() {
+    var ret = <List<Cell>>[];
     for (var l in values) {
-      var s = '';
+      var oret = <Cell>[];
       for (var cell in l) {
-        s += cell.text;
+        oret.add(cell);
       }
-      ret.add(s);
+      ret.add(oret);
     }
     return ret;
   }

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fnvim/core/EditorState.dart';
 import 'package:fnvim/core/events/EventHandler.dart';
-import 'package:fnvim/core/utils/ColorUtils.dart';
+import 'package:fnvim/core/state/GridState.dart';
+import 'package:fnvim/core/state/WindowState.dart';
 import 'package:fnvim/providers/ThemeProvider.dart';
 import 'package:fnvim/ui/utils/GridUtils.dart';
-import 'core/extensions/HighlightsExtension.dart';
 
 import 'package:fnvim/ui/windows/WindowsStack.dart';
 
@@ -18,6 +18,18 @@ final themeProvider = ChangeNotifierProvider<ThemeProvider>((ref) {
   return ThemeProvider();
 });
 
+final windowStateProvider = ChangeNotifierProvider<WindowState>((ref) {
+  return WindowState();
+});
+
+final gridStateProvider = ChangeNotifierProvider<GridState>((ref) {
+  return GridState();
+});
+
+final gridCursorStateProvider = ChangeNotifierProvider<ChangeNotifier>((ref) {
+  return ChangeNotifier();
+});
+
 final editorStateProvider = ChangeNotifierProvider<EditorState>((ref) {
   return EditorState();
 });
@@ -26,21 +38,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
-      child: Consumer(
-        builder: (context, watch, child) {
-          var e = watch(editorStateProvider);
-          var a =
-              e.highlights.from_name('IncSearch')?.rgb_attr?['foreground'] ??
-                  255;
-          return MaterialApp(
-            title: 'Flutter Demo',
-            theme: ThemeData(
-              fontFamily: 'FiraCodeNerdFont',
-              scaffoldBackgroundColor: ColorUtils.from_24_bit_int(a),
-            ),
-            home: MyHomePage(),
-          );
-        },
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          fontFamily: 'FiraCodeNerdFont',
+        ),
+        home: MyHomePage(),
       ),
     );
   }
@@ -66,11 +69,16 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     node = FocusNode();
     text = [];
-    handler = EventHandler(context.read(editorStateProvider));
+    handler = EventHandler(
+      context.read(editorStateProvider),
+      context.read(windowStateProvider),
+      context.read(gridStateProvider),
+      context.read(gridCursorStateProvider),
+    );
     dostuff();
   }
 
-  void handle(Nvim n, String s, List<dynamic> ar) {
+  Future handle(Nvim n, String s, List<dynamic> ar) async {
     for (var arg in ar) {
       handler.handleEvent(arg);
     }
@@ -98,7 +106,6 @@ class _MyHomePageState extends State<MyHomePage> {
       autofocus: true,
       onKey: (event) {
         if (event.character != null) {
-          print(event.character);
           nvim.input(event.character!);
         }
       },

@@ -1,9 +1,9 @@
-import 'package:fnvim/core/EditorState.dart';
 import 'package:fnvim/core/models/Window.dart';
 import 'package:fnvim/core/extensions/ForEachArgExtension.dart';
+import 'package:fnvim/core/state/WindowState.dart';
 
 class WindowEventsHandler {
-  final EditorState state;
+  final WindowState state;
 
   WindowEventsHandler(this.state);
 

@@ -1,9 +1,9 @@
-import 'package:fnvim/core/EditorState.dart';
 import 'package:fnvim/core/extensions/ForEachArgExtension.dart';
 import 'package:fnvim/core/models/Grid.dart';
+import 'package:fnvim/core/state/GridState.dart';
 
 class GridEventsHandler {
-  final EditorState state;
+  final GridState state;
 
   GridEventsHandler(this.state);
 
