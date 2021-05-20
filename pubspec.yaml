@@ -27,7 +27,7 @@ dependencies:
   msgpack_dart: ^1.0.0
   riverpod: ^0.14.0+3
   dart_nvim_api:
-      path: /home/simrat39/dart-nvim-api
+    git: https://www.github.com/simrat39/dart-nvim-api 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2

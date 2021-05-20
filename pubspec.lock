@@ -53,9 +53,11 @@ packages:
   dart_nvim_api:
     dependency: "direct main"
     description:
-      path: "/home/simrat39/dart-nvim-api"
-      relative: false
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: de6e3e00e39d85dec6fc47c4de81b895df4c83bb
+      url: "https://www.github.com/simrat39/dart-nvim-api"
+    source: git
     version: "0.2.2"
   fake_async:
     dependency: transitive
