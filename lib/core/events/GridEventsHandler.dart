@@ -1,9 +1,9 @@
+import 'package:fnvim/core/EditorState.dart';
 import 'package:fnvim/core/extensions/ForEachArgExtension.dart';
 import 'package:fnvim/core/models/Grid.dart';
-import 'package:fnvim/core/state/GridState.dart';
 
 class GridEventsHandler {
-  final GridState state;
+  final EditorState state;
 
   GridEventsHandler(this.state);
 
@@ -11,7 +11,7 @@ class GridEventsHandler {
   /// being created with this size.
   void grid_resize(List<dynamic> data) {
     data.for_each_arg((arg) {
-      var grid_id = arg[0] as GridID;
+      var grid_id = arg[0] as int;
       var width = arg[1] as int;
       var height = arg[2] as int;
 
@@ -44,6 +44,9 @@ class GridEventsHandler {
   void grid_line(List<dynamic> data) {
     data.for_each_arg((arg) {
       var grid = state.grids[arg[0] as int];
+      if (arg[0] != 1) {
+        print(data);
+      }
       grid?.add_grid_line(arg);
     });
   }
@@ -71,7 +74,7 @@ class GridEventsHandler {
   /// with it.
   void grid_destroy(List<dynamic> data) {
     data.for_each_arg((arg) {
-      var grid_id = arg[0] as GridID;
+      var grid_id = arg[0] as int;
       state.grids.remove(grid_id);
     });
   }

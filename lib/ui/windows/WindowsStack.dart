@@ -17,17 +17,22 @@ class _WindowStackState extends State<WindowStack> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, watch, child) {
-        var winState = watch(windowStateProvider);
+        var state = context.read(editorStateProvider);
+        var wins_widgs = state.windows.values.map(
+          (e) {
+            return Positioned(
+              top: GridUtils.get_top_offset_from_rows(e.start_row),
+              left: GridUtils.get_left_offset_from_cols(e.start_col),
+              width: GridUtils.get_width_from_cols(e.width),
+              height: GridUtils.get_height_from_rows(e.height),
+              child: WindowView(
+                window: e,
+              ),
+            );
+          },
+        ).toList();
         return Stack(
-          children: winState.windows.values
-              .map(
-                (e) => Positioned(
-                  top: GridUtils.get_top_offset_from_rows(e.start_row),
-                  left: GridUtils.get_left_offset_from_cols(e.start_col),
-                  child: WindowView(window: e),
-                ),
-              )
-              .toList(),
+          children: wins_widgs,
         );
       },
     );

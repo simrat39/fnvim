@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fnvim/core/EditorState.dart';
 import 'package:fnvim/core/events/EventHandler.dart';
-import 'package:fnvim/core/state/GridState.dart';
-import 'package:fnvim/core/state/WindowState.dart';
 import 'package:fnvim/providers/ThemeProvider.dart';
 import 'package:fnvim/ui/utils/GridUtils.dart';
 
 import 'package:fnvim/ui/windows/WindowsStack.dart';
+import 'package:pedantic/pedantic.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,18 +15,6 @@ void main() {
 
 final themeProvider = ChangeNotifierProvider<ThemeProvider>((ref) {
   return ThemeProvider();
-});
-
-final windowStateProvider = ChangeNotifierProvider<WindowState>((ref) {
-  return WindowState();
-});
-
-final gridStateProvider = ChangeNotifierProvider<GridState>((ref) {
-  return GridState();
-});
-
-final gridCursorStateProvider = ChangeNotifierProvider<ChangeNotifier>((ref) {
-  return ChangeNotifier();
 });
 
 final editorStateProvider = ChangeNotifierProvider<EditorState>((ref) {
@@ -43,7 +30,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           fontFamily: 'FiraCodeNerdFont',
         ),
+        darkTheme: ThemeData.dark(),
         home: MyHomePage(),
+        themeMode: ThemeMode.dark,
       ),
     );
   }
@@ -69,18 +58,13 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     node = FocusNode();
     text = [];
-    handler = EventHandler(
-      context.read(editorStateProvider),
-      context.read(windowStateProvider),
-      context.read(gridStateProvider),
-      context.read(gridCursorStateProvider),
-    );
+    handler = EventHandler(context.read(editorStateProvider));
     dostuff();
   }
 
   Future handle(Nvim n, String s, List<dynamic> ar) async {
     for (var arg in ar) {
-      handler.handleEvent(arg);
+      unawaited(handler.handleEvent(arg));
     }
   }
 
@@ -109,8 +93,13 @@ class _MyHomePageState extends State<MyHomePage> {
           nvim.input(event.character!);
         }
       },
-      child: Scaffold(
-        body: WindowStack(),
+      child: Consumer(
+        builder: (context, watch, child) {
+          watch(editorStateProvider);
+          return Scaffold(
+            body: WindowStack(),
+          );
+        },
       ),
     );
   }

@@ -20,28 +20,28 @@ class _WindowViewState extends State<WindowView> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, watch, child) {
-        var gridState = watch(gridStateProvider);
-        var grid = widget.window.get_grid(gridState);
+        var editorState = context.read(editorStateProvider);
+        var grid = widget.window.get_grid(editorState);
 
-        return Stack(
-          children: [
-            GridWidget(grid: grid!),
-            Positioned(
-              top: GridUtils.get_top_offset_from_rows(grid.cursorPos.row),
-              left: GridUtils.get_left_offset_from_cols(grid.cursorPos.column),
-              // duration: Duration(milliseconds: 70),
-              child: Consumer(
-                builder: (context, watch, child) {
-                  watch(gridCursorStateProvider);
-                  return child!;
-                },
+        return Container(
+          color: Colors.pink,
+          child: Stack(
+            children: [
+              GridWidget(
+                grid: grid!,
+                editorState: editorState,
+                window: widget.window,
+              ),
+              Positioned(
+                top: GridUtils.get_top_offset_from_rows(grid.cursor_row),
+                left: GridUtils.get_left_offset_from_cols(grid.cursor_col),
                 child: Cursor(
                   width: GridUtils.col_width,
                   height: GridUtils.row_height,
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         );
       },
     );

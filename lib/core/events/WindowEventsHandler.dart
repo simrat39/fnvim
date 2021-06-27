@@ -1,13 +1,13 @@
+import 'package:fnvim/core/EditorState.dart';
 import 'package:fnvim/core/models/Window.dart';
 import 'package:fnvim/core/extensions/ForEachArgExtension.dart';
-import 'package:fnvim/core/state/WindowState.dart';
 
 class WindowEventsHandler {
-  final WindowState state;
+  final EditorState state;
 
   WindowEventsHandler(this.state);
 
-  WindowID _window_id_from_grid(int grid) {
+  int _window_id_from_grid(int grid) {
     var win = -1;
     state.windows.forEach((key, value) {
       if (value.grid == grid) {
@@ -24,7 +24,18 @@ class WindowEventsHandler {
     data.for_each_arg((arg) {
       var win_id = arg[1].data;
       state.windows[win_id] =
-          Window(win_id, arg[0], arg[2], arg[3], arg[4], arg[5]);
+          Window(win_id, arg[0], arg[2], arg[3], arg[4], arg[5], false);
+    });
+  }
+
+  /// Set the position and size of the grid in Nvim (i.e. the outer grid
+  /// size). If the window was previously hidden, it should now be shown
+  /// again.
+  void win_float_pos(List<dynamic> data) {
+    data.for_each_arg((arg) {
+      var win_id = arg[1].data;
+      state.windows[win_id] =
+          Window(win_id, arg[0], arg[2], arg[3], arg[4], arg[5], true);
     });
   }
 

@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 
 class GridUtils {
   static var row_height = 17;
-  static var col_width = 13;
+  static var col_width = 10;
 
   static Size get_grid_dimensions(Size screen) {
     var rows = (screen.height / row_height).floor();

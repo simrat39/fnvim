@@ -33,6 +33,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_riverpod: ^0.14.0+3
   pedantic: ^1.0.0
+  collection: ^1.15.0
+  equatable: ^2.0.2
 
 dev_dependencies:
   flutter_test:
@@ -52,7 +54,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   # assets:
-  #   - images/a_dot_burr.jpeg
+  #   - ~/.fonts/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -67,9 +69,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
-  #   - family: Schyler
+  #   - family: FiraCodeNerdFont
   #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: Fira Code Retina Nerd Font Complete.ttf 
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
